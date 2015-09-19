@@ -1,10 +1,10 @@
+#! python2
 from mcpi import minecraft
 import pygame
 
 '''
 BUGS:
-1. pit can be used out side the arena and were it have already been used
-2. the GUI stacks images the a new block/traps is used on the same cods
+1. traps can be used outside of the arena
 
 TODO:
 1. add TNT
@@ -13,8 +13,9 @@ TODO:
 4. add option to make the floor generate by it self over time
 '''
 #connecting to the minevraft server IP in prems
-#mc = minecraft.Minecraft.create("5.189.132.131") # to external ip
-mc = minecraft.Minecraft.create() # to local server on your machine
+mc = minecraft.Minecraft.create() #to local server on your machine
+#mc = minecraft.Minecraft.create("123.456.7.89") #if you wanna join an external server
+
 
 ArenaPos = (100,0,100) #these are the main cordinates for the arena
            # x  y  z
@@ -25,8 +26,14 @@ iceIMG = pygame.image.load('pics/ice.png')
 cobwebIMG = pygame.image.load('pics/web.png')
 lavaIMG = pygame.image.load('pics/lava.png')
 tntIMG = pygame.image.load('pics/tnt.png')
-blankTileIMG = pygame.image.load('pics/blankTile.png') #blanks tiles are plased were the are air blocks
+blankTileIMG = pygame.image.load('pics/blankTile.png') #blanks tiles are plased were there are air blocks
 playerTileIMG = pygame.image.load('pics/playerTile.png')
+
+#icons for the menu.
+icon1 = pygame.image.load('pics/pitIcon.png')
+icon2 = pygame.image.load('pics/iceIcon.png')
+icon3 = pygame.image.load('pics/webIcon.png')
+icon4 = pygame.image.load('pics/lavaIcon.png')
 
 
 #minecraft Blocks
@@ -43,6 +50,7 @@ ice = 79
 #pygame colors
 white = (255,255,255)
 gray = (150,150,150)
+lightGray = (170,170,170)
 black = (0,0,0)
 
 pygame.init()
@@ -205,12 +213,38 @@ def create_arena():
         depthY = depthY + 1
 
 #function that draws rectangles
-def draw_rect(x, y, w, h, c):
+def draw_rect(x, y, w, h, c): #x,y position. w,h width and hight. c color
     pygame.draw.rect(gameDisplay, c, [x, y, w, h])
 
 # makes the menu for the GUI interface
-def menu():
+def menu(item): #item is the selected menu item
     draw_rect(0, 0, width, 64, gray)
+
+    #marks selected item
+    if item == 1:
+        draw_rect(10, 0, 64, 64, lightGray)
+    elif item == 2:
+        draw_rect(84, 0, 64, 64, lightGray)
+    elif item == 3:
+        draw_rect(158, 0, 64, 64, lightGray)
+    elif item == 4:
+        draw_rect(232, 0, 64, 64, lightGray)
+    elif item == 5:
+        draw_rect(306, 0, 64, 64, lightGray)
+    elif item == 6:
+        draw_rect(380, 0, 64, 64, lightGray)
+    elif item == 7:
+        draw_rect(454, 0, 64, 64, lightGray)
+    elif item == 8:
+        draw_rect(528, 0, 64, 64, lightGray)
+    elif item == 9:
+        draw_rect(602, 0, 64, 64, lightGray)
+    
+    #draws the icons on the menu
+    gameDisplay.blit(icon1, (10,0))
+    gameDisplay.blit(icon2, (84,0))
+    gameDisplay.blit(icon3, (158,0))
+    gameDisplay.blit(icon4, (232,0))
 
 #makes the arena background for the GUI interface
 def background():
@@ -328,16 +362,16 @@ def close():
 
 def main():
     create_arena()
-
+    menuItem = 1 #selected menu item selected
     trap = "pit" #the trap that is usede when you click with the mouse
     while True:
         gameDisplay.fill(black)
-        menu()
+        menu(menuItem)
         background()
         drawBlackTiles()
         drawIceTiles()
-        drawWebTiles()
         drawLavaTiles()
+        drawWebTiles()
         showPlayers()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -349,22 +383,26 @@ def main():
 
                 if event.key == pygame.K_1:
                     trap = 'pit'
+                    menuItem = 1
                 if event.key == pygame.K_2:
                     trap = 'ice'
+                    menuItem = 2
                 if event.key == pygame.K_3:
                     trap = 'cobweb'
+                    menuItem = 3
                 if event.key == pygame.K_4:
                     trap = 'lava'
+                    menuItem = 4
                 if event.key == pygame.K_5:
-                    mc.postToChat("key 5 pressed")
+                    menuItem = 5
                 if event.key == pygame.K_6:
-                    mc.postToChat("key 6 pressed")
+                    menuItem = 6
                 if event.key == pygame.K_7:
-                    mc.postToChat("key 7 pressed")
+                    menuItem = 7
                 if event.key == pygame.K_8:
-                    mc.postToChat("key 8 pressed")
+                    menuItem = 8
                 if event.key == pygame.K_9:
-                    mc.postToChat("key 9 pressed")
+                    menuItem = 9
 
                 #rebuilds the arena
                 if event.key == pygame.K_r:
