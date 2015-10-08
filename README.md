@@ -9,7 +9,6 @@ which can be found here: http://dev.bukkit.org/bukkit-plugins/raspberryjuice/
 right now you can only place and remove some simple blocks and traps plus creating/rebuilding the arena.
 
 todos:
-  add so you can see which item you are currently using.
   add different sizes to the traps.
   add more complex traps.
   find a better way to check how the arena look like.
